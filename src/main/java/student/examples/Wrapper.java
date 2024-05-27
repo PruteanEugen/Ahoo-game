@@ -1,16 +1,16 @@
 package student.examples;
 
-public class Wrapper {
-    private Integer value;
-    public Wrapper(Integer value) {
+public class Wrapper  <T> {
+    private T value;
+    public Wrapper(T value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public T getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(T value) {
         this.value = value;
     }
 }
