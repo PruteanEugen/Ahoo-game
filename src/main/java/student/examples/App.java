@@ -42,7 +42,7 @@ public class App
         String username = scanner.nextLine();
         System.out.print("Enter index: ");
         int index = scanner.nextInt();
-        ((User(users.get(index)).setUsarname(username);
+        ((User)users.get(index)).setUsarname(username);
 
 //        for (int i = 0; i < users.size() ; i++) {
 //            System.out.println(users.get(i));
