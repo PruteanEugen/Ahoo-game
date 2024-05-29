@@ -1,6 +1,7 @@
 package student.examples;
 
 
+import com.github.javafaker.Faker;
 import student.examples.entities.User;
 
 import java.util.ArrayList;
@@ -14,42 +15,35 @@ import java.util.Scanner;
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
-      //  Scanner scanner = new Scanner(System.in);
+    public static void main( String[] args ) {
+        //1. Folosind Faker de umplut o lista cu 10 utilizatori
+        //2. De copiat toti utilizatori care se incep cu litera A si de afisat ambele.
+
+        Faker faker = new Faker();
+        List<User> users = new ArrayList<User>();
+        List<User> usersWithA = new ArrayList<User>();
 
 
-
-
-
-//        Wrapper <Integer> wi = new Wrapper<>(1000);
-//        Wrapper <String> ws = new Wrapper<>("abc");
-//        System.out.println(ws.getValue().toUpperCase());
-//        System.out.println(wi.getValue());
-
-
-        // CRUD - CREATE / READ / UPDATE/ DELETE    BREAD - BROWS /READ / EDIT / ADD / DELETE
-        //Generics
-        //    v
-        List<User> users = new ArrayList<>(); //SO[L]I[D]
-
-        while (users.size() != 5) {
-            users.add(new User(String.format("User %d" , users.size()+1)));
-
+            while (users.size() < 10) {
+                users.add(new User (faker.name().username()));
             }
 
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUsarname().equals("User 3")) {
-                users.remove(i);
+                for (int i = 0; i < users.size(); i++) {
+                    if (users.get(i).getUsarname().startsWith("a")) {
+                        usersWithA.add(users.get(i));
+                    }
             }
-        }
-        //users.remove(new User("User 1"));
-
-
+        System.out.println("Original Users List:");
         users.forEach(System.out::println);
 
-    }
+        // Display filtered list
+        System.out.println("\nUsers Whose Names Start with 'A':");
+        usersWithA.forEach(System.out::println);
+
+        }
 }
+
+
 
 
 
