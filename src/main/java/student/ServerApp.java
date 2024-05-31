@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ServerApp {
     public static void main(String[] args) throws Exception{
@@ -25,6 +26,7 @@ public class ServerApp {
 
         byte[] data = is.readAllBytes();
         //String message = new String(data);
+        new Scanner(System.in).next();
         is.close();
         clientSocket.close();
         System.out.println("Client sent message: " + message);

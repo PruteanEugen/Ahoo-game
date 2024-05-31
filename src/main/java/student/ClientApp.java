@@ -23,8 +23,10 @@ public class ClientApp {
         ObjectOutputStream oos = new ObjectOutputStream(os); //Paternul decoratorului
         Message message = new Message("Hello",UUID.randomUUID());
         oos.writeObject(message);
+        new Scanner (System.in).next();
         oos.close();
         clientSocket.close();
+
 
 
     }
