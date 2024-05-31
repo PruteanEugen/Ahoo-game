@@ -26,15 +26,19 @@ public class App {
             byte[] content  = is.readAllBytes();
             String textContent = new String(content);
             System.out.println(textContent);
-            StringBuffer processedContent = new StringBuffer();
+
 
 
             // Text processing
              final String pattern = "(\\d+)(EURO)";
             Pattern pattern1 = Pattern.compile(pattern);
             Matcher matcher = pattern1.matcher(textContent);
-            while (matcher.find()) {
 
+            do {
+                matcher = pattern1.matcher(textContent);
+                if (!matcher.find()) {
+                    break;
+                }
                 Double amount = Double.valueOf(matcher.group(1));
                 String currency = matcher.group(2);
                 Double amountMDL = amount * rate;
@@ -43,15 +47,19 @@ public class App {
 
                 String replacement = String.format("%.2fMDL", amountMDL);
 
-                matcher.appendReplacement(processedContent, replacement);
-            }
+                textContent = matcher.replaceFirst(replacement);
+                System.out.println(textContent);
+                System.out.println(amountMDL);
+                System.out.println(currency);
+                break;
+            } while (true);
             //
-                matcher.appendTail(processedContent);
+
 
 
             //Write into destination second file
             OutputStream os = new FileOutputStream(fileOutput);
-            os.write(processedContent.toString().getBytes());
+            os.write(textContent.getBytes());
 
             is.close();
             os.close();
