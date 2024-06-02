@@ -13,6 +13,8 @@ public class Message implements Serializable { //Market
     private UUID id;
     private String body;
 
+    public Message() {}
+
     public Message(String body, UUID id) {
         this.body = body;
         this.id = id;

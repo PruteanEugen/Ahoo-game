@@ -1,34 +1,60 @@
 package student;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.OutputStream;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class ServerApp {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         final int PORT = 20000;
+        try {
 
-        //listening
-        ServerSocket serverSocket = new ServerSocket(PORT);
+            //listening
+            ServerSocket serverSocket = new ServerSocket(PORT);
 
-        System.out.println("Server running at port " + PORT);
+            System.out.println("Server running at port " + PORT);
 
-        Socket clientSocket = serverSocket.accept();
-        System.out.println("A client was connected");
-        InputStream is = clientSocket.getInputStream();
+            while (true) {
+                // Accept a client connection
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("A client was connected");
 
-        ObjectInputStream ois = new ObjectInputStream(is);
 
-        Message message = (Message) ois.readObject();
+                // Read the Json message from the client
+                BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                StringBuilder jsonMessageBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonMessageBuilder.append(line);
+                }
 
-        byte[] data = is.readAllBytes();
-        //String message = new String(data);
-        new Scanner(System.in).next();
-        is.close();
-        clientSocket.close();
-        System.out.println("Client sent message: " + message);
+                String jsonMessage = reader.readLine();
+
+                //Debug: Print the received JSON message
+                System.out.println("Server received: " + jsonMessage);
+
+                // Deserialize the JSON message to a Message object
+                if (jsonMessage != null && jsonMessage.trim().isEmpty()) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    Message message = objectMapper.readValue(jsonMessage, Message.class);
+
+                    //Save the Message object to JSON file
+                    try (FileWriter fileWriter = new FileWriter("received_message.json")) {
+                        objectMapper.writeValue(fileWriter, message);
+                    }
+                    System.out.println("Client sent message: " + message);
+                } else {
+                    System.err.println("Received null or empty JSON message.");
+                }
+
+                clientSocket.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
+
